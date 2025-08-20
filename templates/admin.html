@@ -1,0 +1,83 @@
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>پنل ادمین مهدکودک</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <style>
+        body { padding: 2rem; background-color: #eef2f7; }
+        .container { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        .title { font-size: 1.3rem; font-weight: bold; margin-bottom: 1rem; text-align: center; }
+        table { font-size: 0.95rem; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="title">پنل مدیریت ثبتنام</div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for cat, msg in messages %}
+              <div class="alert alert-{{ 'success' if cat=='success' else 'info' }}" role="alert">{{ msg }}</div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        {% if records %}
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+
+                        <th>ردیف</th>
+                        <th>نام</th>
+                        <th>نام خانوادگی</th>
+                        <th>تاریخ تولد</th>
+                        <th>کد ملی</th>
+                        <th>نام ولی</th>
+                        <th>شماره</th>
+                        <th>آدرس</th>
+                        <th>کلاس</th>
+                        <th>مدرک</th>
+                        <th>عملیات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in records %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ row[1] }}</td>
+                        <td>{{ row[2] }}</td>
+                        <td>{{ row[3] }}</td>
+                        <td>{{ row[4] }}</td>
+
+                        <td>{{ row[5] }}</td>
+                        <td>{{ row[6] }}</td>
+                        <td>{{ row[7] }}</td>
+                        <td>{{ row[8] }}</td>
+                        <td>
+                            {% if row[9] %}
+                              <a href="{{ url_for('uploaded_file', filename=row[9]) }}" target="_blank">مشاهده</a>
+                            {% else %}
+                              -
+                            {% endif %}
+                        </td>
+                        <td>
+                            <form action="/delete/{{ row[0] }}" method="post" onsubmit="return confirm('آیا از حذف این رکورد مطمئن هستید؟');">
+                                <button type="submit" class="btn btn-sm btn-danger">حذف</button>
+
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+            <p class="text-center text-muted">هیچ ثبتنامی انجام نشده است.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
