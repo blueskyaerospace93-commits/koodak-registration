@@ -10,10 +10,11 @@ app = Flask(__name__)
 app.secret_key = "supersecretkey" # برای session ادمین
 
 # 📂 مسیر آپلود
-os.makedirs(app.config['UPLOAD_FOLDER'],exist_ok=true)
-UPLOAD_FOLDER = os.path.join(os.getcwd(), 'uploads')
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+UPLOAD_FOLDER = 'uploads'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 
 # 📌 ایجاد دیتابیس
@@ -158,5 +159,6 @@ def export_excel():
 # ▶️ اجرا محلی
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5000)
+
 
 
