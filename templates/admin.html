@@ -5,18 +5,27 @@
     <title>پنل مدیریت</title>
     <style>
         body { font-family: Tahoma, sans-serif; direction: rtl; background: #eef2f3; }
-        .container { max-width: 90%; margin: 30px auto; background: #fff; padding: 20px; border-radius: 10px; }
-        table { width: 100%; border-collapse: collapse; }
+        .container { max-width: 95%; margin: 30px auto; background: #fff; padding: 20px; border-radius: 10px; }
+        table { width: 100%; border-collapse: collapse; font-size: 14px; }
         table, th, td { border: 1px solid #ccc; }
         th, td { padding: 8px; text-align: center; }
         th { background: #28a745; color: white; }
         a.delete { color: red; text-decoration: none; font-weight: bold; }
         a.delete:hover { text-decoration: underline; }
+        .top-actions { margin-bottom: 15px; }
+        .top-actions a { display: inline-block; padding: 8px 12px; background: #007bff; color: #fff; border-radius: 5px; text-decoration: none; margin-left: 5px; }
+        .top-actions a:hover { background: #0056b3; }
     </style>
 </head>
 <body>
 <div class="container">
     <h2>پنل مدیریت ثبت‌نام‌ها</h2>
+
+    <div class="top-actions">
+        <a href="/export">⬇️ دانلود خروجی اکسل</a>
+        <a href="/">🏠 بازگشت به فرم</a>
+    </div>
+
     <table>
         <tr>
             <th>شناسه</th>
@@ -27,7 +36,8 @@
             <th>تلفن ۲</th>
             <th>آدرس</th>
             <th>گروه</th>
-            <th>مدرک</th>
+            <th>مدارک</th>
+            <th>کد پیگیری</th>
             <th>حذف</th>
         </tr>
         {% for row in rows %}
@@ -42,11 +52,15 @@
             <td>{{ row[7] }}</td>
             <td>
                 {% if row[8] %}
-                    <a href="{{ row[8] }}" target="_blank">دانلود</a>
+                    {% set files = row[8].split(';') %}
+                    {% for f in files %}
+                        <a href="{{ f }}" target="_blank">📄</a>
+                    {% endfor %}
                 {% else %}
                     -
                 {% endif %}
             </td>
+            <td>{{ row[9] }}</td>
             <td><a class="delete" href="/delete/{{ row[0] }}">❌</a></td>
         </tr>
         {% endfor %}
